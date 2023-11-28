@@ -1,0 +1,35 @@
+# Use postgresql/example user/password credentials.
+version: '3.1'
+
+services:
+    db:
+        image: postgres:15-alpine
+        restart: always
+        environment:
+            POSTGRES_USER: myogm
+            POSTGRES_PASSWORD: testing123
+
+    # Adminer es un administrador de BD para postgresql en interfaz web, simple y rápido.
+    # adminer:
+    #     image: adminer
+    #     restart: always
+    #     ports: 
+    #         - 8888:8080
+
+    # Correr pgadmin.
+    # ToDo -> Pruebas
+    pgadmin:
+        image: dpage/pgadmin4:7
+        restart: always
+        environment:
+            - PGADMIN_DEFAULT_EMAIL=oscar_prueba@gmail.com
+            - PGADMIN_DEFAULT_PASSWORD=testing123
+        ports:
+            - 5050:80
+        volumes:
+            - ./pgadmin_data:/var/lib/pgadmin 
+            - ./servers-pruebas.json:/pgadmin4/servers.json # preconfigured servers/connections
+
+
+
+
