@@ -28,7 +28,7 @@ services:
             - 5050:80
         volumes:
             - ./pgadmin_data:/var/lib/pgadmin 
-            - ./servers-pruebas.json:/pgadmin4/servers.json # preconfigured servers/connections
+            # - ./servers-pruebas.json:/pgadmin4/servers.json # preconfigured servers/connections
 
 
 

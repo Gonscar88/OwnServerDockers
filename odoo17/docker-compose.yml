@@ -1,0 +1,53 @@
+version: '3.1'
+services:
+
+    odoo-web:
+        image: odoo:17.0
+        container_name: odoo-web
+        depends_on:
+            - db
+        ports:
+            - "8078:8069"
+        volumes:
+            - odoo-web-data:/var/lib/odoo
+            - ./config:/etc/odoo
+            - /home/oscar/Documents/docker_volumes/planner:/mnt/extra-addons
+        environment:
+            - PASSWORD_FILE=/run/secrets/postgresql_password
+        secrets:
+            - postgresql_password
+
+    db:
+        image: postgres:15
+        container_name: odoo-database
+        environment:
+            - POSTGRES_DB=postgres
+            - POSTGRES_PASSWORD_FILE=/run/secrets/postgresql_password
+            - POSTGRES_USER=odoo
+            - PGDATA=/var/lib/postgresql/data/pgdata
+        volumes:
+            - odoo-db-data:/var/lib/postgresql/data/pgdata
+        secrets:
+            - postgresql_password
+  
+    pgadmin:
+        image: dpage/pgadmin4:7
+        # restart: always
+        depends_on:
+            - db
+        environment:
+            - PGADMIN_DEFAULT_EMAIL=oscar_prueba@gmail.com
+            - PGADMIN_DEFAULT_PASSWORD=testing123
+        ports:
+            - 5050:80
+        volumes:
+            - pgadmin_data:/var/lib/pgadmin 
+
+volumes:
+  odoo-web-data:
+  odoo-db-data:
+  pgadmin_data:
+
+secrets:
+  postgresql_password:
+    file: odoo_pg_pass
