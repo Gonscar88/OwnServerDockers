@@ -1,0 +1,28 @@
+# Dependency directory
+/build/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Own Files
+oohel_planner/
+
+# Compiled files
+*.com
+*.class
+*.dll
+*.exe
+*.o
+*.so
+
+# Log files
+*.log
+
+# Temporary files
+*.swp
+
+# Visual Studio Code
+.vscode/
