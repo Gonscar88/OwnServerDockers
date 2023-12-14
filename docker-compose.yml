@@ -1,0 +1,54 @@
+version: '3.1'
+services:
+    oohel_planner:
+        image: gonscar88/odoo13_focal:1.0
+        container_name: oohel_planner
+        depends_on:
+            - db
+        volumes:
+            - ${full_path_modules}:/odoo/custom/planner
+            - ./config/odoo-server.conf:/etc/odoo-server.conf
+        ports:
+            - 8069:8069
+        environment:
+            - PASSWORD_FILE=/run/secrets/postgresql_password
+        secrets:
+            - postgresql_password
+        tty: true
+
+    db:
+        image: postgres:15
+        container_name: database_planner
+        environment:
+            - POSTGRES_DB=postgres
+            - POSTGRES_PASSWORD_FILE=/run/secrets/postgresql_password
+            - POSTGRES_USER=odoo
+            - PGDATA=/var/lib/postgresql/data/pgdata
+        volumes:
+            - planner_db_data:/var/lib/postgresql/data/pgdata
+        secrets:
+            - postgresql_password
+    
+    pgadmin:
+        image: dpage/pgadmin4:7
+        depends_on:
+            - db
+        environment:
+            - PGADMIN_DEFAULT_EMAIL=${myuseremail@demo.com}
+            - PGADMIN_DEFAULT_PASSWORD=mysuperpasswordtesting123
+        ports:
+            - 5051:80
+        volumes:
+            - pgadmin_data:/var/lib/pgadmin
+    
+volumes:
+  pgadmin_data:
+  planner_db_data:
+
+secrets:
+  postgresql_password:
+    file: odoo_pg_pass
+        
+    
+    
+    
